@@ -1,0 +1,76 @@
+
+  <div>
+    <header>
+        
+    </header>
+    <main>
+      <div class="header">
+        <div></div>
+        <div v-for="i in xList" :key="i.index">
+          {{i.title}}
+        </div>
+      </div>
+  
+        <div class="body">
+            <div class="signal-wrapper">
+                <div ref="signal" class="signal" :style="{height:bodyHeight+'px'}">
+                    <span class="signal-item"
+                        v-for="i in signalList"
+                        :key="i.value"
+                        :style="{left:0,top:i.top+'px'}"
+                    >
+                        {{convert(i.value)}}
+                    </span>
+                </div>
+
+            </div>
+            <div class="palette-wrapper">
+                <div ref="palette" class="palette" :style="{height:bodyHeight+'px'}">
+                    <div :class="{hidden:!showRemind}" class="remind-wrapper" :style="{top:remindStartY+'px'}">
+                        <label>{{remindStartValue}}</label>
+                        <div></div>
+                    </div>
+                    <div :class="{hidden:!showRemind}" class="remind-wrapper" :style="{top:remindEndY+'px'}">
+                        <label>{{remindEndValue}}</label>
+                        <div></div>
+                    </div>
+                    <span class="draw-line"
+                        v-for="line in drawLines"
+                        :key="line"
+                        :style="{left:0,top:line+'px'}"
+                    />
+
+                    <div 
+                        class="palette-item"
+                        v-for="paletteItem in paletteItemList" :key='paletteItem.index'>
+                        <div
+                            
+                            class="draw-card"
+                            v-for="(item,index) in paletteItem.items"
+                            :key='index'
+                            :style="{
+                                left:0,top:item.startPixel+'px',height:item.endPixel-item.startPixel+'px'
+                            }"
+                        >
+                            <article
+                                @mouseenter="cardEnter(item,$event)"
+                                @mouseleave="cardLeave(item,$event)"
+                                @click="cardClick(item,$event)"
+                                :style="{
+                                 backgroundImage:'linear-gradient(275deg,'+item.color+','+item.colorLight+')',
+                                 color:item.colorDeep
+                                }"
+                            >
+                                <header>{{item.title}}</header>
+                                <div class="content" v-if="item.content" :style="{color:item.colorDes}">
+                                    {{item.content}}
+                                </div>
+                            </article>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+  </div>
