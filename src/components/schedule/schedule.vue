@@ -9,6 +9,7 @@ import {Component,Prop,Watch} from "vue-property-decorator";
 import {Item,x_list_item} from "./interface";
 import {body_height} from "./setting";
 import DataHandler,{SignalItem,PaletteItem} from "./lib";
+import {Scroll} from "./scroll";
 
 
 @Component({})
@@ -21,6 +22,7 @@ export default class extends Vue{
     remindStartValue:string=""; //上值
     remindEndValue:string=""; //下值
 
+    scroll:any=null;
     @Prop({})xList:any;
     @Prop({default:null})items:any;
     @Watch("items")
@@ -35,7 +37,14 @@ export default class extends Vue{
       console.info("created")
     }
     mounted(){
+        //设置鼠标横向滚动
+      this.scroll=new Scroll(
+          (this.$refs as any)["palette_wrapper"],
+          (this.$refs as any)["palette"]
+      );
+
       this.run();
+
     }
 
     drawLines:number[]=[];
@@ -57,6 +66,7 @@ export default class extends Vue{
       this.drawLines=this.dataHandler.paletteLines;
       this.signalList=this.dataHandler.signalList;
       this.paletteItemList=this.dataHandler.paletteItems;
+      setTimeout(()=>this.scroll.handleScroll());
     }
 
     /**

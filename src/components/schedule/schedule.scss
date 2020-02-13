@@ -12,56 +12,59 @@ main{
   $--signal-size:12px;
   $--card-padding:6px;
   $--remind-color:#317EF3;
+  $--item-width:150px;  //列宽
+  $--line-dis-top:$--body-padding-y + $--header-height;
   border: 1px solid $--line-color;
   border-radius: $--card-radius;
   .header{
-    display:flex;
+    height:$--header-height;
+    line-height: $--header-height;
     background-color:$--header-bg;
+  }
+  .header-td{
+    justify-content: center;
+    display:flex;
     height:$--header-height;
     line-height:$--header-height;
-    &>div{
-      flex:1;
-      justify-content: center;
-      font-weight:bold;
-      &:first-of-type{
-        width:$--td-first-w;
-        max-width:$--td-first-w;
-      }
-      &:not(:last-of-type){
-        border-right:$--base-border;
-      }
-    }
-    border-bottom:$--base-border;
-  }
-  .body{
-    &>div{
-      padding:$--body-padding-y 0;
-      position:relative;
+    background-color:$--header-bg;
+    border-right:$--base-border;
+    &.not-border{
+      border-right:none;
     }
   }
   .body{
     display:flex;
   }
-  .signal-wrapper{
+  .body-left{
     width:$--td-first-w;
     max-width: $--td-first-w;
     min-width: $--td-first-w;
     border-right:1px solid $--line-color;
   }
-  .palette-wrapper{
+  .body-right{
     flex:1;
     position:relative;
+  }
+  .signal-wrapper{
+    padding:$--body-padding-y 0;
+  }
+  .palette-wrapper{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    overflow-y:hidden;
+    overflow-x:auto;
   }
   .signal,.palette{
     position:relative;
   }
   .palette{
     white-space:nowrap;
-    display:flex;
-    flex-wrap:nowrap;
-
   }
   .draw-line{
+    margin-top:$--line-dis-top;
     height:1px;
     background-color:$--line-color;
     position:absolute;
@@ -76,7 +79,15 @@ main{
     transform:translateY(-50%);
   }
   .palette-item{
-    flex:1;
+    width:$--item-width;
+    min-width:$--item-width;
+    position:relative;
+    display:inline-block;
+    .header-td{
+      margin-bottom:$--body-padding-y;
+    }
+  }
+  .palette-item-content{
     position:relative;
   }
   .draw-card{
@@ -116,6 +127,7 @@ main{
     height:1px;
     background-color:$--remind-color;
     transition:all 0.3s ease-out;
+    margin-top:$--line-dis-top;
     &>div{
       //position:absolute;
     }

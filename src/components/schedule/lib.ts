@@ -9,7 +9,8 @@ export interface SignalItem{
 
 export interface PaletteItem{
   items:Item[],
-  index:number;
+  index:number,
+  title:String
 }
 
 export default class dataHandler extends Draw{
@@ -94,6 +95,15 @@ export default class dataHandler extends Draw{
    * 画板计算
    */
   paletteCal(){
+    /**
+     *  paletteItems
+     */
+    this.paletteItems=this.xList.map((i:x_list_item)=>({
+      index:i.index,
+      items:[],
+      title:i.title
+    }));
+
     const per=body_height/this.yTotal; //每分钟占据像素值
     let v:number;
     //计算线标
@@ -111,14 +121,9 @@ export default class dataHandler extends Draw{
       i['startPixel']=i['startMinute']&&(i['startMinute']-this.yStart)*per;
       i['endPixel']=i['endMinute']&&(i['endMinute']-this.yStart)*per;
       
-      const paletteItem:PaletteItem|undefined=this.paletteItems.find((p:PaletteItem)=>p.index==i.positionIndex)
+      const paletteItem:PaletteItem|undefined=this.paletteItems.find((p:PaletteItem)=>p.index==i.positionIndex);
       if(paletteItem){
         paletteItem.items.push(i)
-      }else{
-        this.paletteItems.push({
-          index:i.positionIndex,
-          items:[i]
-        })
       }
       //颜色控制
       const iRGB=this.getRGBFromHex(this.colorController(i.totalMinute))
@@ -127,18 +132,6 @@ export default class dataHandler extends Draw{
       i['colorLight']=this.lightColor(iRGB,0.1);
       i['colorDes']=this.deepColor(iRGB,.2);
     }
-    this.paletteItems.sort((p:PaletteItem,n:PaletteItem)=>p.index-n.index)
-    const maxIndex=this.paletteItems[this.paletteItems.length-1]["index"];
-    const ployCount=this.xList.length-this.paletteItems.length;
-    if(ployCount>0){
-      for(let i=1;i<=ployCount;i++){
-        this.paletteItems.push({
-          items:[],
-          index:maxIndex+i
-        })
-      }
-    }
-
   }
 
   coordinateCal(){

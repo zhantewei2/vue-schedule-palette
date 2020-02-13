@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
+import {ScheduleModule} from "../dist/index.umd.min";
 Vue.config.productionTip = false;
 
 new Vue({
